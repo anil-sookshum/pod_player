@@ -198,12 +198,9 @@ class _PodVideoPlayerState extends State<PodVideoPlayer> with TickerProviderStat
                   return widget.onVideoError?.call() ?? _videoErrorWidget;
                 }
 
-                return AspectRatio(
-                  aspectRatio: _frameAspectRatio,
-                  child: _podCtr.videoCtr?.value.isInitialized ?? false
-                      ? _buildPlayer()
-                      : Center(child: circularProgressIndicator),
-                );
+                return _podCtr.videoCtr?.value.isInitialized ?? false
+                    ? _buildPlayer()
+                    : Center(child: circularProgressIndicator);
               },
             ),
           ),
