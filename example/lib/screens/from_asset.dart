@@ -32,6 +32,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
       ),
       body: Center(
         child: PodVideoPlayer(
+          showControls: false,
           controller: controller,
           podPlayerLabels: const PodPlayerLabels(
             play: "PLAY",

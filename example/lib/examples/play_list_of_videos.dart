@@ -25,16 +25,11 @@ class ListOfVideosApp extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ListOfVideosScreen(
                           videosList: [
-                            PlayVideoFrom.asset(
-                                'assets/SampleVideo_720x480_20mb.mp4'),
-                            PlayVideoFrom.asset(
-                                'assets/SampleVideo_720x480_20mb.mp4'),
-                            PlayVideoFrom.asset(
-                                'assets/SampleVideo_720x480_20mb.mp4'),
-                            PlayVideoFrom.asset(
-                                'assets/SampleVideo_720x480_20mb.mp4'),
-                            PlayVideoFrom.asset(
-                                'assets/SampleVideo_720x480_20mb.mp4'),
+                            PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
+                            PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
+                            PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
+                            PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
+                            PlayVideoFrom.asset('assets/SampleVideo_720x480_20mb.mp4'),
                           ],
                         ),
                       ));
@@ -82,8 +77,7 @@ class ListOfVideosApp extends StatelessWidget {
 
 class ListOfVideosScreen extends StatelessWidget {
   final List<PlayVideoFrom> videosList;
-  const ListOfVideosScreen({Key? key, required this.videosList})
-      : super(key: key);
+  const ListOfVideosScreen({Key? key, required this.videosList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +94,7 @@ class ListOfVideosScreen extends StatelessWidget {
 
 class ListOfVideosViewer extends StatefulWidget {
   final List<PlayVideoFrom> videosList;
-  const ListOfVideosViewer({Key? key, required this.videosList})
-      : super(key: key);
+  const ListOfVideosViewer({Key? key, required this.videosList}) : super(key: key);
 
   @override
   State<ListOfVideosViewer> createState() => _ListOfVideosViewerState();
@@ -151,7 +144,10 @@ class _ListOfVideosViewerState extends State<ListOfVideosViewer> {
         controllers[index].initialise();
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 40),
-          child: PodVideoPlayer(controller: controllers[index]),
+          child: PodVideoPlayer(
+            controller: controllers[index],
+            showControls: false,
+          ),
         );
       },
     );

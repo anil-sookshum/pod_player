@@ -16,6 +16,10 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
   void initState() {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.vimeo('518228118'),
+      podPlayerConfig: PodPlayerConfig(
+        autoPlay: false,
+        forcedVideoFocus: true,
+      ),
     )..initialise();
     super.initState();
   }
@@ -35,12 +39,25 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromVimeoId> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              PodVideoPlayer(controller: controller),
+              PodVideoPlayer(
+                controller: controller,
+                showControls: false,
+              ),
               const SizedBox(height: 40),
               _loadVideoFromUrl()
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          if (controller.isVideoPlaying) {
+            controller.pause();
+          } else {
+            controller.play();
+          }
+        },
       ),
     );
   }

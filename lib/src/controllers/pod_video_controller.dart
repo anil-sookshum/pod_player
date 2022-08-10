@@ -230,10 +230,10 @@ class _PodVideoController extends _PodUiController {
           fullscreenDialog: true,
           pageBuilder: (BuildContext context, _, __) => FullScreenView(
             tag: tag,
+            showControls: showControls ?? false,
           ),
           reverseTransitionDuration: const Duration(milliseconds: 400),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              FadeTransition(
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(
             opacity: animation,
             child: child,
           ),
@@ -246,10 +246,8 @@ class _PodVideoController extends _PodUiController {
   String calculateVideoDuration(Duration _duration) {
     final _totalHour = _duration.inHours == 0 ? '' : '${_duration.inHours}:';
     final _totalMinute = _duration.toString().split(':')[1];
-    final _totalSeconds = (_duration - Duration(minutes: _duration.inMinutes))
-        .inSeconds
-        .toString()
-        .padLeft(2, '0');
+    final _totalSeconds =
+        (_duration - Duration(minutes: _duration.inMinutes)).inSeconds.toString().padLeft(2, '0');
     final String videoLength = '$_totalHour$_totalMinute:$_totalSeconds';
     return videoLength;
   }
