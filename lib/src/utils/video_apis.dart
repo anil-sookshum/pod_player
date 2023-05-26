@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../models/vimeo_models.dart';
 
@@ -11,16 +12,27 @@ String podErrorString(String val) {
 }
 
 class VideoApis {
-  static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrls(
-    String videoId,
-  ) async {
-    try {
-      final response = await http.get(
+  static Future<Response> _makeRequestHash(String videoId, String? hash) {
+    if (hash == null) {
+      return http.get(
         Uri.parse('https://player.vimeo.com/video/$videoId/config'),
       );
+    } else {
+      return http.get(
+        Uri.parse('https://player.vimeo.com/video/$videoId/config?h=$hash'),
+      );
+    }
+  }
+
+  static Future<List<VideoQalityUrls>?> getVimeoVideoQualityUrls(
+    String videoId,
+    String? hash,
+  ) async {
+    try {
+      final response = await _makeRequestHash(videoId, hash);
       final jsonData =
           jsonDecode(response.body)['request']['files']['progressive'];
-      return List.generate(
+      final progressiveUrls = List.generate(
         jsonData.length,
         (index) => VideoQalityUrls(
           quality: int.parse(
@@ -29,6 +41,54 @@ class VideoApis {
           url: jsonData[index]['url'],
         ),
       );
+      if (progressiveUrls.isEmpty) {
+        final jsonRes =
+            jsonDecode(response.body)['request']['files']['hls']['cdns'];
+        for (final element in (jsonRes as Map).entries.toList()) {
+          progressiveUrls.add(
+            VideoQalityUrls(
+              quality: 720,
+              url: element.value['url'],
+            ),
+          );
+          break;
+        }
+      }
+      return progressiveUrls;
+    } catch (error) {
+      if (error.toString().contains('XMLHttpRequest')) {
+        log(
+          podErrorString(
+            '(INFO) To play vimeo video in WEB, Please enable CORS in your browser',
+          ),
+        );
+      }
+      debugPrint('===== VIMEO API ERROR: $error ==========');
+      rethrow;
+    }
+  }
+
+  static Future<List<VideoQalityUrls>?> getVimeoPrivateVideoQualityUrls(
+    String videoId,
+    Map<String, String> httpHeader,
+  ) async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.vimeo.com/videos/$videoId'),
+        headers: httpHeader,
+      );
+      final jsonData = jsonDecode(response.body)['files'];
+
+      final List<VideoQalityUrls> list = [];
+      for (int i = 0; i < jsonData.length; i++) {
+        final String quality =
+            (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
+        final int? number = int.tryParse(quality);
+        if (number != null && number != 0) {
+          list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
+        }
+      }
+      return list;
     } catch (error) {
       if (error.toString().contains('XMLHttpRequest')) {
         log(

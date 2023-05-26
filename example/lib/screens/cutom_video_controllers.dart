@@ -110,7 +110,6 @@ class _CustomVideoControllsState extends State<CustomVideoControlls> {
                 matchFrameAspectRatioToVideo: true,
                 matchVideoAspectRatioToFrame: true,
                 videoTitle: videoTitle,
-                showControls: false,
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),

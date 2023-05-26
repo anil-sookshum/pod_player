@@ -1,24 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:flutter/material.dart';
 
-class PlayVideoFromYoutube extends StatefulWidget {
-  const PlayVideoFromYoutube({Key? key}) : super(key: key);
+class PlayVideoFromVimeoPrivateId extends StatefulWidget {
+  const PlayVideoFromVimeoPrivateId({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromYoutube> createState() => _PlayVideoFromVimeoIdState();
+  State<PlayVideoFromVimeoPrivateId> createState() =>
+      _PlayVideoFromVimeoPrivateIdState();
 }
 
-class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
+class _PlayVideoFromVimeoPrivateIdState
+    extends State<PlayVideoFromVimeoPrivateId> {
   late final PodPlayerController controller;
   final videoTextFieldCtr = TextEditingController();
+  final tokenTextFieldCtr = TextEditingController();
+
   @override
   void initState() {
     controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/A3ltMaM6noM'),
-      podPlayerConfig: const PodPlayerConfig(
-        videoQualityPriority: [720, 360],
-        autoPlay: false,
-      ),
+      playVideoFrom: PlayVideoFrom.vimeo('518228118'),
     )..initialise();
     super.initState();
   }
@@ -32,21 +32,13 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Youtube player')),
+      appBar: AppBar(title: const Text('Vimeo Player')),
       body: SafeArea(
         child: Center(
           child: ListView(
             shrinkWrap: true,
             children: [
-              PodVideoPlayer(
-                controller: controller,
-                videoThumbnail: const DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dW5zcGxhc2h8ZW58MHx8MHx8&w=1000&q=80',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              PodVideoPlayer(controller: controller),
               const SizedBox(height: 40),
               _loadVideoFromUrl()
             ],
@@ -64,9 +56,21 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
           child: TextField(
             controller: videoTextFieldCtr,
             decoration: const InputDecoration(
-              labelText: 'Enter youtube url/id',
+              labelText: 'Enter vimeo private id',
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              hintText: 'https://youtu.be/A3ltMaM6noM',
+              hintText: 'ex: 518228118',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: TextField(
+            controller: tokenTextFieldCtr,
+            decoration: const InputDecoration(
+              labelText: 'Enter vimeo access token',
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              hintText: 'ex: {32chars}',
               border: OutlineInputBorder(),
             ),
           ),
@@ -77,14 +81,25 @@ class _PlayVideoFromVimeoIdState extends State<PlayVideoFromYoutube> {
           child: ElevatedButton(
             onPressed: () async {
               if (videoTextFieldCtr.text.isEmpty) {
-                snackBar('Please enter the url');
+                snackBar('Please enter the id');
+                return;
+              }
+              if (tokenTextFieldCtr.text.isEmpty) {
+                snackBar('Please enter the access token');
                 return;
               }
               try {
                 snackBar('Loading....');
                 FocusScope.of(context).unfocus();
+
+                final Map<String, String> headers = <String, String>{};
+                headers['Authorization'] = 'Bearer ${tokenTextFieldCtr.text}';
+
                 await controller.changeVideo(
-                  playVideoFrom: PlayVideoFrom.youtube(videoTextFieldCtr.text),
+                  playVideoFrom: PlayVideoFrom.vimeoPrivateVideos(
+                    videoTextFieldCtr.text,
+                    httpHeaders: headers,
+                  ),
                 );
                 if (!mounted) return;
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();

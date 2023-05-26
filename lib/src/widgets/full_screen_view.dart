@@ -3,7 +3,6 @@ part of 'package:pod_player/src/pod_player.dart';
 class FullScreenView extends StatefulWidget {
   final String tag;
   final bool showControls;
-
   const FullScreenView({
     Key? key,
     required this.tag,
@@ -71,7 +70,8 @@ class _FullScreenViewState extends State<FullScreenView> with TickerProviderStat
                               tag: widget.tag,
                               videoPlayerCtr: _podCtr.videoCtr!,
                               videoAspectRatio: _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
-                              showControls: widget.showControls)
+                              showControls: widget.showControls,
+                            )
                           : loadingWidget,
                 ),
               ),

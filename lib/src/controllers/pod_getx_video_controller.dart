@@ -133,7 +133,10 @@ class PodGetXVideoController extends _PodGesturesController {
 
         break;
       case PodVideoPlayerType.vimeo:
-        await getQualityUrlsFromVimeoId(playVideoFrom.dataSource!);
+        await getQualityUrlsFromVimeoId(
+          playVideoFrom.dataSource!,
+          hash: playVideoFrom.hash,
+        );
         final _url = await getUrlFromVideoQualityUrls(
           qualityList: podPlayerConfig.videoQualityPriority,
           videoUrls: vimeoOrVideoUrls,
@@ -172,6 +175,26 @@ class PodGetXVideoController extends _PodGesturesController {
           closedCaptionFile: playVideoFrom.closedCaptionFile,
           videoPlayerOptions: playVideoFrom.videoPlayerOptions,
         );
+
+        break;
+      case PodVideoPlayerType.vimeoPrivateVideos:
+        await getQualityUrlsFromVimeoPrivateId(
+          playVideoFrom.dataSource!,
+          playVideoFrom.httpHeaders,
+        );
+        final _url = await getUrlFromVideoQualityUrls(
+          qualityList: podPlayerConfig.videoQualityPriority,
+          videoUrls: vimeoOrVideoUrls,
+        );
+
+        _videoCtr = VideoPlayerController.network(
+          _url,
+          closedCaptionFile: playVideoFrom.closedCaptionFile,
+          formatHint: playVideoFrom.formatHint,
+          videoPlayerOptions: playVideoFrom.videoPlayerOptions,
+          httpHeaders: playVideoFrom.httpHeaders,
+        );
+        playingVideoUrl = _url;
 
         break;
     }

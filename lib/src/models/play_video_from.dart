@@ -2,6 +2,7 @@ import '../../pod_player.dart';
 
 class PlayVideoFrom {
   final String? dataSource;
+  final String? hash;
   final PodVideoPlayerType playerType;
   final VideoFormat? formatHint;
   final String? package;
@@ -15,6 +16,7 @@ class PlayVideoFrom {
   const PlayVideoFrom._({
     this.live = false,
     this.dataSource,
+    this.hash,
     required this.playerType,
     this.formatHint,
     this.package,
@@ -74,6 +76,7 @@ class PlayVideoFrom {
 
   factory PlayVideoFrom.vimeo(
     String dataSource, {
+    String? hash,
     VideoFormat? formatHint,
     Future<ClosedCaptionFile>? closedCaptionFile,
     VideoPlayerOptions? videoPlayerOptions,
@@ -81,6 +84,24 @@ class PlayVideoFrom {
   }) {
     return PlayVideoFrom._(
       playerType: PodVideoPlayerType.vimeo,
+      dataSource: dataSource,
+      hash: hash,
+      formatHint: formatHint,
+      closedCaptionFile: closedCaptionFile,
+      videoPlayerOptions: videoPlayerOptions,
+      httpHeaders: httpHeaders,
+    );
+  }
+
+  factory PlayVideoFrom.vimeoPrivateVideos(
+    String dataSource, {
+    VideoFormat? formatHint,
+    Future<ClosedCaptionFile>? closedCaptionFile,
+    VideoPlayerOptions? videoPlayerOptions,
+    Map<String, String> httpHeaders = const {},
+  }) {
+    return PlayVideoFrom._(
+      playerType: PodVideoPlayerType.vimeoPrivateVideos,
       dataSource: dataSource,
       formatHint: formatHint,
       closedCaptionFile: closedCaptionFile,

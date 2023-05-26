@@ -6,7 +6,8 @@ class PlayVideoFromNetworkQualityUrls extends StatefulWidget {
   const PlayVideoFromNetworkQualityUrls({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromNetworkQualityUrls> createState() => _PlayVideoFromAssetState();
+  State<PlayVideoFromNetworkQualityUrls> createState() =>
+      _PlayVideoFromAssetState();
 }
 
 class _PlayVideoFromAssetState extends State<PlayVideoFromNetworkQualityUrls> {
@@ -45,7 +46,6 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetworkQualityUrls> {
       body: SafeArea(
         child: Center(
           child: PodVideoPlayer(
-            showControls: false,
             controller: controller,
             podProgressBarConfig: const PodProgressBarConfig(
               padding: kIsWeb

@@ -50,10 +50,6 @@ class VimeoVideoViewerState extends State<VimeoVideoViewer> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : Center(
-            child: PodVideoPlayer(
-            controller: controller,
-            showControls: false,
-          ));
+        : Center(child: PodVideoPlayer(controller: controller));
   }
 }

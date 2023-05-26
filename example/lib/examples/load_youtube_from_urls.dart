@@ -12,7 +12,8 @@ class YoutubeApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Load youtube video from quality urls')),
+        appBar:
+            AppBar(title: const Text('Load youtube video from quality urls')),
         body: const YoutubeVideoViewer(),
       ),
     );
@@ -52,10 +53,6 @@ class _YoutubeVideoViewerState extends State<YoutubeVideoViewer> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(child: CircularProgressIndicator())
-        : Center(
-            child: PodVideoPlayer(
-            controller: controller,
-            showControls: false,
-          ));
+        : Center(child: PodVideoPlayer(controller: controller));
   }
 }
