@@ -42,14 +42,8 @@ class _FullScreenViewState extends State<FullScreenView> with TickerProviderStat
 
     return WillPopScope(
       onWillPop: () async {
-        if (kIsWeb) {
-          await _podCtr.disableFullScreen(
-            context,
-            widget.tag,
-            enablePop: false,
-          );
-        }
-        if (!kIsWeb) await _podCtr.disableFullScreen(context, widget.tag);
+        Navigator.of(context).pop();
+        await _podCtr.disableFullScreen(context, widget.tag);
         return true;
       },
       child: Scaffold(

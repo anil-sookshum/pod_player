@@ -62,20 +62,20 @@ class _MobileOverlay extends StatelessWidget {
                   child: _podCtr.videoTitle ?? const SizedBox(),
                 ),
               ),
-              MaterialIconButton(
-                toolTipMesg: _podCtr.podPlayerLabels.settings,
-                color: itemColor,
-                onPressed: () {
-                  if (_podCtr.isOverlayVisible) {
-                    _bottomSheet(context);
-                  } else {
-                    _podCtr.toggleVideoOverlay();
-                  }
-                },
-                child: const Icon(
-                  Icons.more_vert_rounded,
-                ),
-              ),
+              // MaterialIconButton(
+              //   toolTipMesg: _podCtr.podPlayerLabels.settings,
+              //   color: itemColor,
+              //   onPressed: () {
+              //     if (_podCtr.isOverlayVisible) {
+              //       _bottomSheet(context);
+              //     } else {
+              //       _podCtr.toggleVideoOverlay();
+              //     }
+              //   },
+              //   child: const Icon(
+              //     Icons.more_vert_rounded,
+              //   ),
+              // ),
             ],
           ),
         ),

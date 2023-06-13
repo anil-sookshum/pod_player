@@ -230,13 +230,13 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                 toolTipMesg: _podCtr.isFullScreen
                     ? _podCtr.podPlayerLabels.exitFullScreen ??
                         'Exit full screen${kIsWeb ? ' (f)' : ''}'
-                    : _podCtr.podPlayerLabels.fullscreen ??
-                        'Fullscreen${kIsWeb ? ' (f)' : ''}',
+                    : _podCtr.podPlayerLabels.fullscreen ?? 'Fullscreen${kIsWeb ? ' (f)' : ''}',
                 color: itemColor,
                 onPressed: () {
                   if (_podCtr.isOverlayVisible) {
                     if (_podCtr.isFullScreen) {
                       _podCtr.disableFullScreen(context, tag);
+                      Navigator.of(context).pop();
                     } else {
                       _podCtr.enableFullScreen(tag);
                     }
@@ -245,9 +245,7 @@ class _MobileOverlayBottomControlles extends StatelessWidget {
                   }
                 },
                 child: Icon(
-                  _podCtr.isFullScreen
-                      ? Icons.fullscreen_exit
-                      : Icons.fullscreen,
+                  _podCtr.isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
                 ),
               ),
             ],
