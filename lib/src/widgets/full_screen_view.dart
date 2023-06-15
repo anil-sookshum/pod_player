@@ -40,34 +40,27 @@ class _FullScreenViewState extends State<FullScreenView> with TickerProviderStat
           strokeWidth: 2,
         );
 
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pop();
-        await _podCtr.disableFullScreen(context, widget.tag);
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: GetBuilder<PodGetXVideoController>(
-          tag: widget.tag,
-          builder: (_podCtr) => Center(
-            child: ColoredBox(
-              color: Colors.black,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: _podCtr.videoCtr == null
-                      ? loadingWidget
-                      : _podCtr.videoCtr!.value.isInitialized
-                          ? _PodCoreVideoPlayer(
-                              tag: widget.tag,
-                              videoPlayerCtr: _podCtr.videoCtr!,
-                              videoAspectRatio: _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
-                              showControls: widget.showControls,
-                            )
-                          : loadingWidget,
-                ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: GetBuilder<PodGetXVideoController>(
+        tag: widget.tag,
+        builder: (_podCtr) => Center(
+          child: ColoredBox(
+            color: Colors.black,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                child: _podCtr.videoCtr == null
+                    ? loadingWidget
+                    : _podCtr.videoCtr!.value.isInitialized
+                        ? _PodCoreVideoPlayer(
+                            tag: widget.tag,
+                            videoPlayerCtr: _podCtr.videoCtr!,
+                            videoAspectRatio: _podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                            showControls: true,
+                          )
+                        : loadingWidget,
               ),
             ),
           ),
