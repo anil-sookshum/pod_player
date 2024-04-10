@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+
 import '../models/vimeo_models.dart';
 
 String podErrorString(String val) {
@@ -30,29 +31,46 @@ class VideoApis {
   ) async {
     try {
       final response = await _makeRequestHash(videoId, hash);
-      final jsonData =
-          jsonDecode(response.body)['request']['files']['progressive'];
-      final progressiveUrls = List.generate(
-        jsonData.length,
-        (index) => VideoQalityUrls(
-          quality: int.parse(
-            (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
+      var jsonData = <dynamic>[];
+      var progressiveUrls = <VideoQalityUrls>[];
+      if (jsonDecode(response.body)['request']['files']['progressive'] != null) {
+        jsonData = jsonDecode(response.body)['request']['files']['progressive'] as List<dynamic>;
+        progressiveUrls = List.generate(
+          jsonData.length,
+          (index) => VideoQalityUrls(
+            quality: int.parse(
+              (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
+            ),
+            url: jsonData[index]['url'] as String,
           ),
-          url: jsonData[index]['url'],
-        ),
-      );
-      if (progressiveUrls.isEmpty) {
-        final jsonRes =
-            jsonDecode(response.body)['request']['files']['hls']['cdns'];
+        );
+      }
+      if (progressiveUrls.isEmpty && jsonDecode(response.body)['request']['files']['hls'] != null) {
+        final jsonRes = jsonDecode(response.body)['request']['files']['hls']['cdns'];
+
         for (final element in (jsonRes as Map).entries.toList()) {
           progressiveUrls.add(
             VideoQalityUrls(
               quality: 720,
-              url: element.value['url'],
+              url: element.value['url'] as String,
             ),
           );
           break;
         }
+      }
+
+      if (progressiveUrls.isEmpty &&
+          jsonDecode(response.body)['request']['files']['dash'] != null) {
+        jsonData = jsonDecode(response.body)['request']['files']['dash']['cdns'] as List<dynamic>;
+        progressiveUrls = List.generate(
+          jsonData.length,
+          (index) => VideoQalityUrls(
+            quality: int.parse(
+              (jsonData[index]['quality'] as String?)?.split('p').first ?? '0',
+            ),
+            url: jsonData[index]['url'] as String,
+          ),
+        );
       }
       return progressiveUrls;
     } catch (error) {
@@ -63,7 +81,7 @@ class VideoApis {
           ),
         );
       }
-      debugPrint('===== VIMEO API ERROR: $error ==========');
+      debugPrint('58===== VIMEO API ERROR: $error ==========');
       rethrow;
     }
   }
@@ -81,8 +99,7 @@ class VideoApis {
 
       final List<VideoQalityUrls> list = [];
       for (int i = 0; i < jsonData.length; i++) {
-        final String quality =
-            (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
+        final String quality = (jsonData[i]['rendition'] as String?)?.split('p').first ?? '0';
         final int? number = int.tryParse(quality);
         if (number != null && number != 0) {
           list.add(VideoQalityUrls(quality: number, url: jsonData[i]['link']));
@@ -120,8 +137,7 @@ class VideoApis {
           ),
         );
       } else {
-        final manifest =
-            await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
+        final manifest = await yt.videos.streamsClient.getManifest(youtubeIdOrUrl);
         urls.addAll(
           manifest.muxed.map(
             (element) => VideoQalityUrls(
