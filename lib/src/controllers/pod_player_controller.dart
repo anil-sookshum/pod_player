@@ -49,6 +49,7 @@ class PodPlayerController {
       try {
         if (!_isCtrInitialised) {
           await _ctr.videoInit();
+          print('object');
           podLog('$getTag Pod player Initialized');
         } else {
           podLog('$getTag Pod Player Controller Already Initialized');
@@ -185,8 +186,7 @@ class PodPlayerController {
       );
 
   //Change double tap duration
-  void setDoubeTapForwarDuration(int seconds) =>
-      _ctr.doubleTapForwardSeconds = seconds;
+  void setDoubeTapForwarDuration(int seconds) => _ctr.doubleTapForwardSeconds = seconds;
 
   ///Jumps to specific position of the video
   Future<void> videoSeekTo(Duration moment) async {

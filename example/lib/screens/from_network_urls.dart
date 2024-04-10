@@ -1,13 +1,12 @@
-import 'package:pod_player/pod_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 
 class PlayVideoFromNetworkQualityUrls extends StatefulWidget {
   const PlayVideoFromNetworkQualityUrls({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromNetworkQualityUrls> createState() =>
-      _PlayVideoFromAssetState();
+  State<PlayVideoFromNetworkQualityUrls> createState() => _PlayVideoFromAssetState();
 }
 
 class _PlayVideoFromAssetState extends State<PlayVideoFromNetworkQualityUrls> {
@@ -47,6 +46,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetworkQualityUrls> {
         child: Center(
           child: PodVideoPlayer(
             controller: controller,
+            showControls: false,
             podProgressBarConfig: const PodProgressBarConfig(
               padding: kIsWeb
                   ? EdgeInsets.zero

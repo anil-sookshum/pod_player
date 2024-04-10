@@ -1,16 +1,14 @@
-import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 
 class PlayVideoFromVimeoPrivateId extends StatefulWidget {
   const PlayVideoFromVimeoPrivateId({Key? key}) : super(key: key);
 
   @override
-  State<PlayVideoFromVimeoPrivateId> createState() =>
-      _PlayVideoFromVimeoPrivateIdState();
+  State<PlayVideoFromVimeoPrivateId> createState() => _PlayVideoFromVimeoPrivateIdState();
 }
 
-class _PlayVideoFromVimeoPrivateIdState
-    extends State<PlayVideoFromVimeoPrivateId> {
+class _PlayVideoFromVimeoPrivateIdState extends State<PlayVideoFromVimeoPrivateId> {
   late final PodPlayerController controller;
   final videoTextFieldCtr = TextEditingController();
   final tokenTextFieldCtr = TextEditingController();
@@ -38,7 +36,10 @@ class _PlayVideoFromVimeoPrivateIdState
           child: ListView(
             shrinkWrap: true,
             children: [
-              PodVideoPlayer(controller: controller),
+              PodVideoPlayer(
+                controller: controller,
+                showControls: false,
+              ),
               const SizedBox(height: 40),
               _loadVideoFromUrl()
             ],

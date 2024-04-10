@@ -1,5 +1,5 @@
-import 'package:pod_player/pod_player.dart';
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 
 class PlayVideoFromAsset extends StatefulWidget {
   const PlayVideoFromAsset({Key? key}) : super(key: key);
@@ -32,6 +32,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromAsset> {
       ),
       body: Center(
         child: PodVideoPlayer(
+          showControls: false,
           controller: controller,
           podPlayerLabels: const PodPlayerLabels(
             play: "PLAY",

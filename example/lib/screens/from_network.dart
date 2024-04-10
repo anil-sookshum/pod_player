@@ -1,6 +1,6 @@
-import 'package:pod_player/pod_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 
 class PlayVideoFromNetwork extends StatefulWidget {
   const PlayVideoFromNetwork({Key? key}) : super(key: key);
@@ -40,6 +40,7 @@ class _PlayVideoFromAssetState extends State<PlayVideoFromNetwork> {
             children: [
               PodVideoPlayer(
                 controller: controller,
+                showControls: false,
                 podProgressBarConfig: const PodProgressBarConfig(
                   padding: kIsWeb
                       ? EdgeInsets.zero
